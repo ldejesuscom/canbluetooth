@@ -1,3 +1,4 @@
+from dbus import Byte
 import dbus
 import dbus.service
 import dbus.mainloop.glib
@@ -149,7 +150,7 @@ class GattCharacteristic(dbus.service.Object):
     def __init__(self, bus):
         self.bus = bus
         self.path = '/com/example/ble/char0'
-        self.value = []
+        self.value = [Byte(0)]
         self.notify_enabled = False
         dbus.service.Object.__init__(self, bus, self.path)
 
