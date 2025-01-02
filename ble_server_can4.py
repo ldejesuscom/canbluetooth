@@ -128,6 +128,7 @@ class GattService(dbus.service.Object):
         self.path = '/com/example/ble/service0'
         self.characteristics = [GattCharacteristic(bus)]
         dbus.service.Object.__init__(self, bus, self.path)
+        print(f"Characteristic Service Path: {self.path}")
 
     def get_properties(self):
         properties = {
