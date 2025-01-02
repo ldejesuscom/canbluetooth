@@ -22,37 +22,37 @@ class BLEServer:
         self.mainloop = None
 
     def register_gatt_server(self):
-        # Get the object manager for BlueZ
-        obj_manager = dbus.Interface(self.bus.get_object('org.bluez', '/'), 'org.freedesktop.DBus.ObjectManager')
-
-        # Find the adapter path
-        bluez_objects = obj_manager.GetManagedObjects()
-        adapter_path = None
-        for path, interfaces in bluez_objects.items():
-            if 'org.bluez.Adapter1' in interfaces:
-                adapter_path = path
-                break
-
-        if not adapter_path:
-            raise Exception("Bluetooth adapter not found!")
-
-        # Enable the adapter
-        adapter = dbus.Interface(self.bus.get_object('org.bluez', adapter_path), 'org.freedesktop.DBus.Properties')
-        adapter.Set("org.bluez.Adapter1", "Powered", dbus.Boolean(1))
-
-        # Create and register the GATT application
-        app = GattApplication(self.bus)
-        manager = dbus.Interface(
-            self.bus.get_object('org.bluez', adapter_path),
-            'org.bluez.GattManager1'
-        )
-        manager.RegisterApplication(app.path, {}, reply_handler=self._success, error_handler=self._error)
-
-        # Start advertising
-        self.start_advertising(adapter_path)
-
-        # Return the GATT application instance for further use
-        return app
+        try:
+            # Get the object manager for BlueZ
+            obj_manager = dbus.Interface(self.bus.get_object('org.bluez', '/'), 'org.freedesktop.DBus.ObjectManager')
+    
+            # Find the adapter path
+            bluez_objects = obj_manager.GetManagedObjects()
+            adapter_path = None
+            for path, interfaces in bluez_objects.items():
+                if 'org.bluez.Adapter1' in interfaces:
+                    adapter_path = path
+                    break
+    
+            if not adapter_path:
+                raise Exception("Bluetooth adapter not found!")
+    
+            # Enable the adapter
+            adapter = dbus.Interface(self.bus.get_object('org.bluez', adapter_path), 'org.freedesktop.DBus.Properties')
+            adapter.Set("org.bluez.Adapter1", "Powered", dbus.Boolean(1))
+    
+            # Create and register the GATT application
+            app = GattApplication(self.bus)
+            manager = dbus.Interface(
+                self.bus.get_object('org.bluez', adapter_path),
+                'org.bluez.GattManager1'
+            )
+            manager.RegisterApplication(app.path, {}, reply_handler=lambda: self.start_advertising(adapter_path),
+                                        error_handler=self._error)
+    
+            return app
+        except Exception as e:
+            print(f"Failed to register GATT server: {e}")
 
     def start_advertising(self, adapter_path):
         advertisement = Advertisement(self.bus, 0)
