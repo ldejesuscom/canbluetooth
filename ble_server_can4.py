@@ -140,9 +140,9 @@ class GattService(dbus.service.Object):
                 }
             }
         }
-        for characteristic in self.characteristics:
-            properties.update(characteristic.get_properties())
+        print(f"Service Properties: {properties}")
         return properties
+
 
 
 class GattCharacteristic(dbus.service.Object):
