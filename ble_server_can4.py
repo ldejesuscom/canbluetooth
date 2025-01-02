@@ -118,7 +118,7 @@ class GattApplication(dbus.service.Object):
         objects = {}
         for service in self.services:
             objects.update(service.get_properties())
-        print(f"Managed Objects: {objects}")
+        print(f"Managed Objects Debug: {objects}")  # Debugging output
         return objects
 
 
