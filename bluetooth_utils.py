@@ -246,9 +246,9 @@ class Descriptor(dbus.service.Object):
         print("Default WriteValue called, returning error")
         raise NotSupportedException
 
-    @dbus.service.signal(GATT_CHRC_IFACE, signature="ay")
+    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")
     def PropertiesChanged(self, interface, changed, invalidated):
-        print("PropertiesChanged")
+        pass
 
 
 class Advertisement(dbus.service.Object):
