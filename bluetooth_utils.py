@@ -1,3 +1,4 @@
+# bluetooth_utils.py (helper module)
 import dbus
 import dbus.exceptions
 import dbus.mainloop.glib
@@ -193,7 +194,7 @@ class Characteristic(dbus.service.Object):
         print("Default StopNotify called, returning error")
         raise NotSupportedException
 
-    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")
+    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")  # Corrected signature
     def PropertiesChanged(self, interface, changed, invalidated):
         pass
 
@@ -246,9 +247,9 @@ class Descriptor(dbus.service.Object):
         print("Default WriteValue called, returning error")
         raise NotSupportedException
 
-    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")
+    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")  # Corrected signature
     def PropertiesChanged(self, interface, changed, invalidated):
-        pass
+        print("PropertiesChanged")
 
 
 class Advertisement(dbus.service.Object):
@@ -384,30 +385,5 @@ def register_advertisement(bus, ad_manager, advertisement_data):
 
     try:
         ad_manager.RegisterAdvertisement(
-            adv.get_path(), {}, reply_handler=register_ad_cb, error_handler=register_ad_error_cb
-        )
-    except dbus.exceptions.DBusException as e:
-        print("Failed to register advertisement: " + str(e))
-        return None
-
-    return adv
-
-
-def register_ad_cb():
-    print("Advertisement registered")
-
-
-def register_ad_error_cb(error):
-    print("Failed to register advertisement: " + str(error))
-
-
-def create_gatt_service(bus, uuid):
-    print("Creating GATT service...")
-    service = Service(bus, 0, uuid, True)
-    return service
-
-
-def create_gatt_characteristic(bus, uuid, service, flags, value):
-    print("Creating GATT characteristic...")
-    characteristic = Characteristic(bus, 0, uuid, flags, service)
-    return characteristic
+            adv.get_path(),
+            {"Duration": dbus.UInt16(1800)},  # Example: Advertise for 30 minutes
