@@ -29,7 +29,7 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 #   - create_gatt_service: Creates a GATT service
 #   - create_gatt_characteristic: Creates a GATT characteristic
 
-bus = dbus.SystemBus()
+canbus = dbus.SystemBus()
 app = register_app(bus)
 ad_manager = register_ad_manager(bus)
 
@@ -66,7 +66,7 @@ def handle_can_frame(msg):
     can_data_characteristic.WriteValue(bluetooth_data, {})
 
 # Attach handler to CAN bus
-notifier = can.Notifier(bus, [handle_can_frame])
+notifier = can.Notifier(canbus, [handle_can_frame])
 
 # --- Main Loop ---
 try:
