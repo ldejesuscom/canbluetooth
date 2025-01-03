@@ -387,4 +387,32 @@ def register_advertisement(bus, ad_manager, advertisement_data):
         ad_manager.RegisterAdvertisement(
             adv.get_path(),
             {"Duration": dbus.UInt16(1800)},  # Example: Advertise for 30 minutes
+                        reply_handler=register_ad_cb,
+            error_handler=register_ad_error_cb,
         )
+    except dbus.exceptions.DBusException as e:
+        print("Failed to register advertisement: " + str(e))
+        return None
+
+    return adv
+
+
+def register_ad_cb():
+    print("Advertisement registered")
+
+
+def register_ad_error_cb(error):
+    print("Failed to register advertisement: " + str(error))
+
+
+def create_gatt_service(bus, uuid):
+    print("Creating GATT service...")
+    service = Service(bus, 0, uuid, True)
+    return service
+
+
+def create_gatt_characteristic(bus, uuid, service, flags, value):
+    print("Creating GATT characteristic...")
+    characteristic = Characteristic(bus, 0, uuid, flags, service)
+    return characteristic
+
