@@ -98,12 +98,14 @@ class Application(dbus.service.Object):
     def GetManagedObjects(self):
         response = {}
         for service in self.services:
-            print(f"Registering service path: {service.get_path()}")  # Debugging log
+            print(f"Registering service path: {service.get_path()}")
             response[service.get_path()] = service.get_properties()
             for characteristic in service.characteristics:
-                print(f"Registering characteristic path: {characteristic.get_path()}")  # Debugging log
+                print(f"Registering characteristic path: {characteristic.get_path()}")
                 response[characteristic.get_path()] = characteristic.get_properties()
+        print(f"Managed Objects Response: {response}")  # Debug the entire response
         return response
+
 
 def register_ad_cb():
     print("Advertisement registered")
