@@ -16,7 +16,7 @@ CAN_DATA_SVC_UUID = "12345678-1234-5678-1234-56789abcdef0"
 CAN_DATA_CHAR_UUID = "12345678-1234-5678-1234-56789abcdef1"
 
 # --- CAN Interface Setup ---
-bus = can.interface.Bus(channel="vcan0", bustype="socketcan")
+canbus = can.interface.Bus(channel="vcan0", bustype="socketcan")
 
 # --- Bluetooth Setup ---
 mainloop = GLib.MainLoop()
@@ -29,7 +29,7 @@ dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 #   - create_gatt_service: Creates a GATT service
 #   - create_gatt_characteristic: Creates a GATT characteristic
 
-canbus = dbus.SystemBus()
+bus = dbus.SystemBus()
 app = register_app(bus)
 ad_manager = register_ad_manager(bus)
 
