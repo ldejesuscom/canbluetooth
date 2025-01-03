@@ -387,3 +387,4 @@ def register_advertisement(bus, ad_manager, advertisement_data):
         ad_manager.RegisterAdvertisement(
             adv.get_path(),
             {"Duration": dbus.UInt16(1800)},  # Example: Advertise for 30 minutes
+        )
