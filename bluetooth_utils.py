@@ -193,7 +193,7 @@ class Characteristic(dbus.service.Object):
         print("Default StopNotify called, returning error")
         raise NotSupportedException
 
-    @dbus.service.signal(GATT_CHRC_IFACE, signature="ay")
+    @dbus.service.signal(GATT_CHRC_IFACE, signature="sa{sv}as")
     def PropertiesChanged(self, interface, changed, invalidated):
         pass
 
