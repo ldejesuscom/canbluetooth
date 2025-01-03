@@ -1,8 +1,9 @@
+# ble3.py (main application)
 import can
 import dbus
 import dbus.mainloop.glib
 from gi.repository import GLib
-from bluetooth_utils import (  # Assuming a helper module (see below)
+from bluetooth_utils import (
     register_app,
     register_ad_manager,
     register_advertisement,
@@ -11,7 +12,6 @@ from bluetooth_utils import (  # Assuming a helper module (see below)
 )
 
 # --- Constants ---
-# Define your GATT service and characteristic UUIDs
 CAN_DATA_SVC_UUID = "12345678-1234-5678-1234-56789abcdef0"
 CAN_DATA_CHAR_UUID = "12345678-1234-5678-1234-56789abcdef1"
 
@@ -21,13 +21,6 @@ canbus = can.interface.Bus(channel="vcan0", bustype="socketcan")
 # --- Bluetooth Setup ---
 mainloop = GLib.MainLoop()
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-
-# Assuming you have a 'bluetooth_utils.py' with the following functions:
-#   - register_app: Registers the application with BlueZ
-#   - register_ad_manager: Registers an advertisement manager
-#   - register_advertisement: Registers a Bluetooth LE advertisement
-#   - create_gatt_service: Creates a GATT service
-#   - create_gatt_characteristic: Creates a GATT characteristic
 
 bus = dbus.SystemBus()
 app = register_app(bus)
@@ -39,7 +32,7 @@ can_data_characteristic = create_gatt_characteristic(
     bus,
     CAN_DATA_CHAR_UUID,
     service,
-    ["read", "notify"],  # Adjust flags as needed
+    ["read", "notify", "write"],  # Include "write" flag
     dbus.Array(signature="ay"),
 )
 
@@ -59,9 +52,7 @@ def handle_can_frame(msg):
     can_id = msg.arbitration_id
     can_data = msg.data
     # Format data for Bluetooth transmission (example)
-    bluetooth_data = (
-        can_id.to_bytes(4, byteorder="big") + can_data
-    )  # 4 bytes for CAN ID
+    bluetooth_data = can_id.to_bytes(4, byteorder="big") + can_data
     # Update GATT characteristic value
     can_data_characteristic.WriteValue(bluetooth_data, {})
 
