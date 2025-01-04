@@ -50,6 +50,7 @@ UUID_NAMES = {
     "e95d9250-251d-470a-a062-fa1922dfa9a8" : "Temperature",
     "e95d93ee-251d-470a-a062-fa1922dfa9a8" : "LED Text",
     "00002902-0000-1000-8000-00805f9b34fb" : "Client Characteristic Configuration",
+    "12345678-1234-5678-1234-56789abcdef0" : "CAN Frames",
 }    
 
 DEVICE_INF_SVC_UUID = "0000180a-0000-1000-8000-00805f9b34fb"
