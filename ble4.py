@@ -22,7 +22,7 @@ class Advertisement(dbus.service.Object):
         self.path = self.PATH_BASE + str(index)
         self.bus = bus
         self.ad_type = advertising_type
-        self.service_uuids = bluetooth_constants.UUID_NAMES
+        self.service_uuids = None
         self.manufacturer_data = None
         self.solicit_uuids = None
         self.service_data = None
