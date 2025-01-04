@@ -31,7 +31,7 @@ class Advertisement(dbus.service.Object):
         self.manufacturer_data = None
         self.solicit_uuids = None
         self.service_data = None
-        self.local_name = 'Hello'
+        self.local_name = 'CAN Adapter'
         self.include_tx_power = False
         self.data = None
         self.discoverable = True
