@@ -22,7 +22,7 @@ class Advertisement(dbus.service.Object):
         self.path = self.PATH_BASE + str(index)
         self.bus = bus
         self.ad_type = advertising_type
-        self.service_uuids = None
+        self.service_uuids = ["12345678-1234-5678-1234-56789abcdef0"]
         self.manufacturer_data = None
         self.solicit_uuids = None
         self.service_data = None
